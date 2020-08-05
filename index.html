@@ -1,0 +1,160 @@
+<html>
+<body>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/series-label.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+<style>
+.highcharts-figure, .highcharts-data-table table {
+    min-width: 360px; 
+    max-width: 800px;
+    margin: 1em auto;
+}
+
+.highcharts-data-table table {
+	font-family: Verdana, sans-serif;
+	border-collapse: collapse;
+	border: 1px solid #EBEBEB;
+	margin: 10px auto;
+	text-align: center;
+	width: 100%;
+	max-width: 500px;
+}
+.highcharts-data-table caption {
+    padding: 1em 0;
+    font-size: 1.2em;
+    color: #555;
+}
+.highcharts-data-table th {
+	font-weight: 600;
+    padding: 0.5em;
+}
+.highcharts-data-table td, .highcharts-data-table th, .highcharts-data-table caption {
+    padding: 0.5em;
+}
+.highcharts-data-table thead tr, .highcharts-data-table tr:nth-child(even) {
+    background: #f8f8f8;
+}
+.highcharts-data-table tr:hover {
+    background: #f1f7ff;
+}
+</style>
+<figure class="highcharts-figure">
+    <div id="container"></div>
+    <textarea id="data" style="width:100%;heigth:200px;">
+    </textarea>
+    <button onclick="analysis()">Analysis</button>
+</figure>
+
+</body>
+<script>
+var benford = [
+    {digit: 1, percentage: 0.301},
+    {digit: 2, percentage: 0.176},
+    {digit: 3, percentage: 0.125},
+    {digit: 4, percentage: 0.097},
+    {digit: 5, percentage: 0.079},
+    {digit: 6, percentage: 0.067},
+    {digit: 7, percentage: 0.058},
+    {digit: 8, percentage: 0.051},
+    {digit: 9, percentage: 0.046},
+];
+
+Highcharts.chart('container', {
+    title: {
+        text: 'Benford Analysis'
+    },
+
+    subtitle: {
+        text: ''
+    },
+
+    yAxis: {
+        title: {
+            text: 'Data Here'
+        }
+    },
+
+    xAxis: {
+        accessibility: {
+            rangeDescription: 'Range: 2010 to 2017'
+        }
+    },
+
+    legend: {
+        layout: 'vertical',
+        align: 'right',
+        verticalAlign: 'middle'
+    },
+
+    plotOptions: {
+        series: {
+            label: {
+                connectorAllowed: false
+            },
+            pointStart: 1
+        }
+    },
+
+    series: [{
+        name: 'Benford',
+        data: [30.1, 17.6, 12.5, 9.7, 7.9, 6.7, 5.8 , 5.1, 4.6]
+    },
+    { name:'Portugal',
+      data: [16.9, 28.1, 22.8, 9.8, 6.5, 4.5,4.5, 3.2, 3.2]
+    },
+    { name: 'Netherlands',
+      data: [43.3, 11.3, 6.9, 5.6, 6.9, 6.9, 8.1, 6.2, 4.4]
+      }
+    ],
+
+
+
+    responsive: {
+        rules: [{
+            condition: {
+                maxWidth: 500
+            },
+            chartOptions: {
+                legend: {
+                    layout: 'horizontal',
+                    align: 'center',
+                    verticalAlign: 'bottom'
+                }
+            }
+        }]
+    }
+});
+
+
+function analysis() {
+    var text = document.getElementById("data").value;
+    var lines = text.split('\n');
+    var raw = [];
+    for(var i = 0 ; i< lines.length; i++) {
+        //console.log(lines[i]);
+        var parts = lines[i].split(',');
+        var aux = ("" + parts[4])[0];
+        raw.push(aux);
+        //console.log(aux);
+    }
+    var freq = [];
+    for(var i=0; i<9;i++) {
+        freq[i] = 0;
+    }
+    var total = 0;
+    for(var i=0; i<raw.length; i++) {
+        if (!isNaN(raw[i])) {
+            var n = parseInt(raw[i]);
+            freq[n-1] = freq[n-1] + 1;
+        }
+    }
+    console.log(freq);
+    //console.log(raw);
+
+    
+}
+// console.log(benford);
+</script>
+</html>
