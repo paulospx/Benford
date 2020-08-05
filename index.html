@@ -206,7 +206,7 @@ var csvData = new Array();
 
 function get_data() {
     var request = new XMLHttpRequest();  
-    request.open("GET", "/data/country_date_newcasescovid.csv", false);   
+    request.open("GET", "data/country_date_newcasescovid.csv", false);   
     request.send(null);  
     
     var jsonObject = request.responseText.split(/\r?\n|\r/);
