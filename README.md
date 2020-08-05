@@ -1,2 +1,2 @@
-# benford
+# Benford
 Benford Distribuition Analysis
