@@ -1,7 +1,9 @@
-# Benford
-Benford's Law 
+# Benford's Law
+Benford's Law analysis of the COVID cases. 
 
 - [https://en.wikipedia.org/wiki/Benford%27s_law](https://en.wikipedia.org/wiki/Benford's_law)
+
+![Benford's Law'](image/benford-analysis.svg)
 
 # Usage 
 
