@@ -93,19 +93,10 @@ var benford = [
 ];
 
 function render_chart(new_data) {
-    //console.log(new_data);
     var series = [{
-            name: 'Benford',
-            data: [30.1, 17.6, 12.5, 9.7, 7.9, 6.7, 5.8 , 5.1, 4.6]
-        }
-        /*,
-        { name:'Portugal',
-        data: [16.9, 28.1, 22.8, 9.8, 6.5, 4.5,4.5, 3.2, 3.2]
-        },
-        { name: 'Netherlands',
-        data: [43.3, 11.3, 6.9, 5.6, 6.9, 6.9, 8.1, 6.2, 4.4]
-        }*/
-        ];
+        name: 'Benford',
+        data: [30.1, 17.6, 12.5, 9.7, 7.9, 6.7, 5.8 , 5.1, 4.6]
+    }];
 
     if (new_data!== undefined) {
         series.push( new_data)
@@ -122,7 +113,7 @@ function render_chart(new_data) {
 
         yAxis: {
             title: {
-                text: 'Data Here'
+                text: 'Percentage'
             }
         },
 
@@ -171,12 +162,13 @@ function analysis() {
     var lines = text.split('\n');
     var raw = [];
     for(var i = 0 ; i< lines.length; i++) {
-        //console.log(lines[i]);
         var parts = lines[i].split(',');
         var aux = ("" + parts[4])[0];
-        raw.push(aux);
-        //console.log(aux);
+        if (aux > 0) { // Filter zeros out 
+            raw.push(aux);
+        }
     }
+    
     var freq = [];
     for(var i=0; i<9;i++) {
         freq[i] = 0;
@@ -189,17 +181,16 @@ function analysis() {
         }
     }
 
-    //console.log(freq);
     var total = 0;
     freq.forEach(function(n) { total = total + n});
-    //console.log(total);
+
     var benford = [];
     freq.forEach(function(n) { benford.push(n/total*100) });
-    //benford.forEach(function(n) { console.log((n).toFixed(2)) });
 
-    var param = { name: document.getElementById("analisys_name").value, data : freq };
+    // console.log(benford,  _.reduce(benford, function(memo, num){ return memo + num; }, 0));
+
+    var param = { name: document.getElementById("analisys_name").value, data : benford };
     render_chart(param);
-    //console.log(benford);
 }
 
 var csvData = new Array();
@@ -231,11 +222,9 @@ function get_data() {
 function select_data(country) {
     document.getElementById("analisys_name").value = country;
     var text = "";
-    // ["Bermuda", "16.058", "2020", "Qtr 3", "August", "4"]
-    _.each(csvData,function(e) { if(e[0] == country) {
-        //console.log(e[1]);
-        text = text + ( e[2] + "," + e[3] + "," + e[4] + ","+ e[5] + "," + parseInt(e[1].replace('.',''))+ "\n");
-            //console.log(e);
+    _.each(csvData,function(e,i) {
+        if(e[0] == country) {
+            text = text + ( e[2] + "," + e[3] + "," + e[4] + ","+ e[5] + "," + parseInt(e[1].replace('.',''))+ "\n");
         }
     });
     document.getElementById("data").value = text;
